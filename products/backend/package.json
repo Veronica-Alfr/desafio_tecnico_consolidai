@@ -1,0 +1,49 @@
+{
+  "name": "desafio_tecnico_consolidai",
+  "version": "1.0.0",
+  "description": "Pra realização desse teste o candidato deverá realizar um fork do repositório, realizar o teste inserindo os arquivos dentro do mesmo repositório e ao finalizar todo o teste deverá realizar um Pull Request para o repositório original.",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx -y tsc",
+    "start": "node build/server.js",
+    "dev": "nodemon --watch \"./src/**\" --exec \"ts-node\" ./src/server.ts",
+    "lint": "eslint ./src --ext .ts",
+    "lint:fix": "eslint ./src --ext .ts --fix",
+    "prisma:generate": "npx prisma generate",
+    "prisma:migrate": "npx prisma migrate deploy",
+    "prisma:push": "npx prisma db push",
+    "prisma:reset": "npx prisma migrate reset",
+    "prisma:studio": "npx prisma studio",
+    "prisma:dev": "npx prisma generate && npm run dev",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up",
+    "docker:down": "docker-compose down",
+    "docker:dev": "docker-compose up --build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^6.10.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
+    "joi": "^17.13.3",
+    "pg": "^8.16.2",
+    "pg-types": "^4.0.2",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.25"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^4.17.17",
+    "@types/joi": "^17.2.2",
+    "@types/node": "^24.0.3",
+    "nodemon": "^3.1.10",
+    "prisma": "^6.10.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
