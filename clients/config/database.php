@@ -1,10 +1,16 @@
 <?php
 class Database {
-    private $host = "db";
-    private $db_name = "clientes_db";
-    private $username = "root";
-    private $password = "password";
-    public $conn;
+    private $host;
+    private $db_name;
+    private $username;
+    private $password;
+    
+    public function __construct() {
+        $this->host = $_ENV['DB_HOST'] ?? 'localhost';
+        $this->db_name = $_ENV['DB_NAME'] ?? 'clientes_db';
+        $this->username = $_ENV['DB_USER'] ?? 'root';
+        $this->password = $_ENV['DB_PASS'] ?? 'password';
+    }
 
     public function getConnection() {
         $this->conn = null;

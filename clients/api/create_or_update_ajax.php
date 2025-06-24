@@ -25,6 +25,18 @@ if ($nome === '' || $cpf === '' || $email === '') {
     exit;
 }
 
+if (!preg_match('/^\d{3}\.?\d{3}\.?\d{3}\-?\d{2}$/', $cpf)) {
+    http_response_code(400);
+    echo json_encode(['error' => 'CPF inválido. Use o formato 000.000.000-00']);
+    exit;
+}
+
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    http_response_code(400);
+    echo json_encode(['error' => 'E-mail inválido']);
+    exit;
+}
+
 try {
     $controller = new ClientController();
 
