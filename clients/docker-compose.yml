@@ -9,6 +9,11 @@ services:
       - .:/var/www/html
     depends_on:
       - db
+    environment:
+      DB_HOST: db
+      DB_NAME: clientes_db
+      DB_USER: root
+      DB_PASS: password
 
   db:
     image: mysql:5.7
