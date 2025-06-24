@@ -62,7 +62,8 @@ $('#client-form').on('submit', function (e) {
         contentType: 'application/json',
         data: JSON.stringify(payload),
         success: function () {
-            $('#form-message').html('<div class="alert alert-success">Cliente salvo com sucesso!</div>');
+            const msg = payload.id ? 'Cliente atualizado com sucesso!' : 'Cliente salvo com sucesso!';
+            $('#form-message').html('<div class="alert alert-success">' + msg + '</div>');
             setTimeout(() => window.location.href = 'index.php?page=list', 1500);
         },
         error: function (xhr) {
