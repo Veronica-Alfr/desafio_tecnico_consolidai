@@ -13,10 +13,10 @@ $clients = $controller->list();
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="bg-light">
 
@@ -56,12 +56,12 @@ $clients = $controller->list();
                             <td><?= htmlspecialchars($client['email']) ?></td>
                             <td><?= htmlspecialchars($client['status']) ?></td>
                             <td><?= htmlspecialchars($client['data_alteracao']) ?></td>
-                            <td class="text-center">
+                            <td>
                                 <a href="index.php?page=edit&id=<?= htmlspecialchars($client['id']) ?>" class="btn btn-sm btn-primary me-1" title="Editar">
-                                    <i class="bi bi-pencil-fill"></i>
+                                    <i class="bi bi-pencil"></i>
                                 </a>
-                                <button type="button" class="btn btn-sm btn-danger btn-delete" title="Excluir">
-                                    <i class="bi bi-trash-fill"></i>
+                                <button class="btn btn-sm btn-danger btn-delete" data-id="<?= htmlspecialchars($client['id']) ?>" title="Excluir">
+                                    <i class="bi bi-trash"></i>
                                 </button>
                             </td>
                         </tr>
@@ -76,38 +76,53 @@ $clients = $controller->list();
 
 <script>
 $(document).ready(function() {
-    $('#clients-table').on('click', '.btn-delete', function() {
-        if (!confirm('Tem certeza que deseja excluir este cliente?')) {
-            return;
-        }
+    $(document).on('click', '.btn-delete', function(e) {
+        e.preventDefault();
 
-        const row = $(this).closest('tr');
-        const clientId = row.data('id');
+        const clientId = $(this).data('id');
 
-        $.ajax({
-            url: 'api/delete_ajax.php',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({ id: clientId }),
-            success: function(response) {
-                if (response.success) {
-                    row.fadeOut(400, function() {
-                        $(this).remove();
-                        if ($('#clients-table tbody tr').length === 0) {
-                            $('#clients-table tbody').append('<tr><td colspan="7" class="text-center">Nenhum cliente encontrado.</td></tr>');
-                        }
-                    });
-                } else {
-                    alert(response.error || 'Erro ao excluir cliente.');
-                }
-            },
-            error: function() {
-                alert('Erro ao excluir cliente.');
+        Swal.fire({
+            title: 'Tem certeza?',
+            text: "Você não poderá reverter essa ação!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Sim, excluir!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: 'api/delete_ajax.php',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ id: clientId }),
+                    success: function () {
+                        Swal.fire(
+                            'Excluído!',
+                            'Cliente excluído com sucesso.',
+                            'success'
+                        );
+
+                        $('button.btn-delete[data-id="' + clientId + '"]').closest('tr').fadeOut(400, function() {
+                            $(this).remove();
+                            if ($('#clients-table tbody tr').length === 0) {
+                                $('#clients-table tbody').append('<tr><td colspan="7" class="text-center">Nenhum cliente encontrado.</td></tr>');
+                            }
+                        });
+                    },
+                    error: function () {
+                        Swal.fire(
+                            'Erro',
+                            'Falha ao excluir o cliente.',
+                            'error'
+                        );
+                    }
+                });
             }
         });
     });
 });
 </script>
-
 </body>
 </html>
