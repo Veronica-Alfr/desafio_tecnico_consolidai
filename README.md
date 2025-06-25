@@ -224,13 +224,16 @@ Verifique se o `node` e `npm` estão instalados:
 node -v
 npm -v
 ```
+⚠  **A versão mínima recomendada do Node.js é 18.17.0** ⚠
 
-Se quiser usar `nvm`, você pode instalar uma versão mais recente do Node:
+Se quiser usar `nvm`, você pode instalar uma versão LTS mais recente do Node(da série 22.x):
 
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 source ~/.bashrc
-nvm install --lts
+
+nvm install 22.11
+nvm use 22.11
 ```
 
 ---
