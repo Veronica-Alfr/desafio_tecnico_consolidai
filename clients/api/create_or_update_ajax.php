@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $data = json_decode(file_get_contents('php://input'), true);
+$status = trim($data['status'] ?? 'ativo');
 
 $nome = trim($data['nome'] ?? '');
 $cpf = trim($data['cpf'] ?? '');
@@ -37,11 +38,17 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
+if (!in_array($status, ['ativo', 'inativo'], true)) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Status inválido. Use "ativo" ou "inativo"']);
+    exit;
+}
+
 try {
     $controller = new ClientController();
 
     if ($id) {
-        $success = $controller->update($id, $nome, $cpf, $email);
+        $success = $controller->update($id, $nome, $cpf, $email, $status);
     } else {
         $success = $controller->create($nome, $cpf, $email);
     }

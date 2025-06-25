@@ -20,8 +20,8 @@ class ClientController {
         return $this->model->getById($id);
     }
 
-    public function update($id, $nome, $cpf, $email) {
-        return $this->model->update($id, $nome, $cpf, $email);
+    public function update($id, $nome, $cpf, $email, $status) {
+        return $this->model->update($id, $nome, $cpf, $email, $status);
     }
 
     public function delete($id) {

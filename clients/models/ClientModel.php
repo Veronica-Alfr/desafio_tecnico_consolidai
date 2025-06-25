@@ -37,17 +37,18 @@ class ClientModel {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function update($id, $nome, $cpf, $email) {
+    public function update($id, $nome, $cpf, $email, $status) {
         $stmt = $this->conn->prepare("
             UPDATE {$this->table}
-            SET nome = :nome, cpf = :cpf, email = :email
+            SET nome = :nome, cpf = :cpf, email = :email, status = :status
             WHERE id = :id
         ");
         return $stmt->execute([
             ':id' => $id,
             ':nome' => $nome,
             ':cpf' => $cpf,
-            ':email' => $email
+            ':email' => $email,
+            ':status' => $status
         ]);
     }
 

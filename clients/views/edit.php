@@ -37,6 +37,14 @@ $cliente = $id ? $controller->get($id) : ['nome' => '', 'cpf' => '', 'email' => 
                     <label for="email" class="form-label">E-mail</label>
                     <input type="email" id="email" class="form-control" value="<?= htmlspecialchars($cliente['email']) ?>" required>
                 </div>
+                <div class="mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select id="status" class="form-select">
+                        <option value="ativo" <?= $cliente['status'] === 'ativo' ? 'selected' : '' ?>>Ativo</option>
+                        <option value="inativo" <?= $cliente['status'] === 'inativo' ? 'selected' : '' ?>>Inativo</option>
+                    </select>
+                </div>
+
                 <button type="submit" class="btn btn-primary"><?= $id ? 'Atualizar' : 'Salvar' ?></button>
                 <a href="index.php?page=list" class="btn btn-secondary">Voltar</a>
             </form>
@@ -53,7 +61,8 @@ $('#client-form').on('submit', function (e) {
         id: $('#id').val() || null,
         nome: $('#nome').val(),
         cpf: $('#cpf').val(),
-        email: $('#email').val()
+        email: $('#email').val(),
+        status: $('#status').val()
     };
 
     $.ajax({
