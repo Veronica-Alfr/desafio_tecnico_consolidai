@@ -200,6 +200,112 @@ docker-compose up --build
 http://localhost:8000
 ```
 
+---
+
+### ✨ Instalação da Aplicação Express.js (Node) + React
+
+Siga os passos abaixo para configurar e executar a aplicação localmente no seu sistema Ubuntu utilizando **Node.js**, **React (Vite)** e **PostgreSQL** com **Prisma ORM**.
+
+---
+
+### ⚙️ 1. Instale os pacotes necessários
+
+Certifique-se de ter as dependências instaladas:
+
+```bash
+sudo apt update
+sudo apt install nodejs npm postgresql postgresql-contrib
+```
+
+Verifique se o `node` e `npm` estão instalados:
+
+```bash
+node -v
+npm -v
+```
+
+Se quiser usar `nvm`, você pode instalar uma versão mais recente do Node:
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+source ~/.bashrc
+nvm install --lts
+```
+
+---
+
+### 📂 2. Configure o ambiente
+
+Crie um arquivo `.env` dentro do diretório `products/backend/` com o seguinte conteúdo:
+
+```env
+NODE_ENV=development
+DATABASE_URL="prisma+postgres://localhost:51213/?api_key=..."  # Sua URL do prisma dev aqui
+```
+
+> ⬆️ A URL do `DATABASE_URL` é gerada automaticamente ao rodar `npx prisma dev`. Esse banco precisa estar ativo enquanto o backend roda.
+
+---
+
+### ⚙️ 3. Inicialize o banco e o backend (Node.js)
+
+Entre no diretório `products/backend`:
+
+```bash
+cd products/backend
+```
+
+Instale as dependências:
+
+```bash
+npm install
+```
+
+Execute os comandos Prisma:
+
+```bash
+npx prisma generate
+npx prisma db push   # Ou npx prisma migrate dev (caso use migrações)
+```
+
+Suba o banco com Prisma Cloud local (opcional):
+
+```bash
+npx prisma dev
+```
+
+Inicie a aplicação em modo desenvolvimento:
+
+```bash
+npm run dev
+```
+
+---
+
+### 🎨 4. Inicie o Frontend (React + Vite)
+
+Entre no diretório `products/frontend`:
+
+```bash
+cd products/frontend
+```
+
+Instale as dependências:
+
+```bash
+npm install
+```
+
+Rode a aplicação:
+
+```bash
+npm run dev
+```
+
+Acesse no navegador: [http://localhost:5173](http://localhost:5173)
+
+---
+
 ## Utilização
 ### 🧑‍💻 Utilização sobre o projeto PHP + MySQL
 
@@ -224,6 +330,19 @@ Após a instalação (local ou via Docker) e ao acessar à URL, siga os passos a
 
    * Clique no ícone de edição na tabela.
    * Altere os dados desejados e clique em **Atualizar**.
+
+---
+
+### 🚀 Utilização da aplicação Node + React
+
+**CRUD completo de produtos**:
+
+  * Criar produtos
+  * Editar produtos
+  * Visualizar todos os produtos ativos
+  * Excluir produtos logicamente (status = "excluido")
+  * A aplicação React se comunica com a API Node.js usando **Axios**.
+  * A listagem é responsiva e adaptada para diferentes tamanhos de tela.
 
 ---
 
@@ -252,3 +371,104 @@ Após a instalação (local ou via Docker) e ao acessar à URL, siga os passos a
 
 * O backend cria a tabela `clientes` automaticamente se ela não existir, ao iniciar a aplicação.
 
+#### 💡 Funcionamento Backend (Node.js + Express + Prisma)
+
+- API RESTful criada com **Express.js**
+- Banco de dados PostgreSQL com **Prisma ORM**
+- Arquitetura MVC desacoplada com:
+  - Controllers: tratam as requisições e respostas HTTP
+  - Services: contêm a lógica de negócio
+  - Repositories: fazem a interação com o Prisma
+- Middleware para tratamento de erros centralizado (`errorMiddleware.ts`)
+- Validações de entrada com **Joi** (`validateProduct.ts`)
+
+Endpoints REST principais:
+
+```http
+GET    /produtos         # Lista todos os produtos ativos
+GET    /produtos/:id     # Detalha um produto
+POST   /produtos         # Cria um novo produto
+PUT    /produtos/:id     # Atualiza dados de um produto
+DELETE /produtos/:id     # Remove logicamente (status = "excluido")
+```
+
+---
+
+### 📦 Estrutura esperada no banco de dados (tabela `produtos`)
+
+| Campo           | Tipo      | Observação                 |
+| --------------- | --------- | -------------------------- |
+| id              | int       | Chave primária             |
+| nome            | string    | Nome do produto            |
+| preco           | decimal   | Preço unitário             |
+| estoque         | int       | Quantidade em estoque      |
+| descricao       | string    | Descrição do produto       |
+| status          | enum      | ativo / inativo / excluido |
+| data\_alteracao | timestamp | Atualizado automaticamente |
+
+---
+
+### 💾 Considerações
+
+- Certifique-se de que o Prisma Cloud (ou o banco local) está ativo ao rodar a aplicação
+- Para resetar o banco: `npx prisma migrate reset`
+- Para explorar os dados: `npx prisma studio`
+
+---
+
+### ⚙️ Funcionamento do Frontend (React + Vite)
+
+A aplicação frontend é uma **SPA (Single Page Application)** desenvolvida com **React** e empacotada com **Vite**, focada no consumo de uma API REST e em uma interface responsiva e intuitiva.
+
+#### 🔍 Estrutura da aplicação
+
+```
+frontend/
+├── src/
+│   ├── api/             # Requisições HTTP (ex: getProducts, createProduct...)
+│   ├── components/      # Componentes reutilizáveis da interface
+│   │   ├── ProductCard.tsx
+│   │   ├── ProductForm.tsx
+│   │   └── ProductsList.tsx
+│   ├── hooks/           # Hooks customizados (ex: useProducts)
+│   ├── interfaces/      # Interfaces TypeScript (ex: IProduct)
+│   ├── pages/           # Páginas principais (ex: ProductsPage.tsx)
+│   ├── App.tsx          # Componente raiz da aplicação
+│   ├── main.tsx         # Ponto de entrada da aplicação React
+│   └── vite-env.d.ts    # Declarações de tipos para o Vite
+```
+
+#### 💡 Como funciona
+
+* `App.tsx`: define a estrutura geral e contém a rota.
+* `main.tsx`: monta o componente `App` na DOM no elemento `#root`.
+* `ProductsPage.tsx`: página principal que carrega e exibe a lista de produtos.
+* `useProducts.ts`: hook central que gerencia o estado e operações (CRUD) de produtos.
+* `ProductForm.tsx`: componente com formulário para criar ou editar produtos.
+* `ProductCard.tsx`: cartão individual com informações de cada produto.
+* `ProductsList.tsx`: renderiza a lista completa dos produtos ativos.
+* `IProduct.ts`: define a interface do objeto Produto, com campos como `id`, `nome`, `preco`, etc.
+
+#### 💡 Comportamentos principais
+
+* Consome os endpoints do backend via `axios` (ou `fetch`).
+* Faz validações de entrada no frontend antes de enviar os dados.
+* Atualiza dinamicamente a interface com base nas operações realizadas (ex: exclusão, edição).
+* Produtos com status `"excluido"` não são listados na interface.
+* Interfaces responsivas com foco em usabilidade e feedback visual.
+
+#### ⚡ Vite
+
+* Utiliza **Vite** como empacotador para:
+
+  * Recarga instantânea (Hot Module Replacement)
+  * Compilação rápida
+  * Suporte nativo a Módulos ES
+
+#### 🔢 TypeScript
+
+* Todos os componentes e hooks são escritos com **TypeScript**, garantindo maior robustez no desenvolvimento e detecção precoce de erros.
+
+---
+
+Essa arquitetura facilita a manutenção e expansão do frontend, permitindo trabalhar com uma base modular, clara e tipada. A comunicação com o backend ocorre de forma limpa e escalável.
