@@ -202,6 +202,7 @@ http://localhost:8000
 
 ---
 
+
 ### ✨ Instalação da Aplicação Express.js (Node) + React
 
 Siga os passos abaixo para configurar e executar a aplicação localmente no seu sistema Ubuntu utilizando **Node.js**, **React (Vite)** e **PostgreSQL** com **Prisma ORM**.
@@ -377,7 +378,8 @@ Após a instalação (local ou via Docker) e ao acessar à URL, siga os passos a
 
 * O backend cria a tabela `clientes` automaticamente se ela não existir, ao iniciar a aplicação.
 
-#### 💡 Funcionamento Backend (Node.js + Express + Prisma)
+
+###  💡 Funcionamento Backend (Node.js + Express + Prisma)
 
 - API RESTful criada com **Express.js**
 - Banco de dados PostgreSQL com **Prisma ORM**
