@@ -24,12 +24,10 @@ class Database {
             );
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            // Garante que a tabela exista
             $this->ensureTableExists();
 
         } catch (PDOException $e) {
             if ($e->getCode() === 1049) {
-                // Cria o banco e as tabelas se o banco não existir
                 $this->createDatabaseAndTables();
             } else {
                 die("Erro de conexão: " . $e->getMessage());
@@ -58,7 +56,6 @@ class Database {
 
     private function createDatabaseAndTables() {
         try {
-            // Conecta sem banco apenas para criar o banco
             $tempConn = new PDO(
                 "mysql:host={$this->host};charset=utf8mb4",
                 $this->username,
@@ -67,7 +64,6 @@ class Database {
             $tempConn->exec("CREATE DATABASE IF NOT EXISTS {$this->db_name} 
                 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
 
-            // Reconecta usando o banco criado
             $this->conn = new PDO(
                 "mysql:host={$this->host};dbname={$this->db_name};charset=utf8mb4",
                 $this->username,
@@ -75,7 +71,6 @@ class Database {
             );
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            // Cria a tabela após criar o banco
             $this->ensureTableExists();
 
         } catch (PDOException $e) {

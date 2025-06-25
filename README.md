@@ -68,11 +68,11 @@ Em casos de problema de execução do ambiente do avaliador, o teste poderá ser
 8. React
 
 ## Instalação
-## ✨ Instalação da Aplicação PHP + MySQL
+### ✨ Instalação da Aplicação PHP + MySQL
 
 ### 📁 Rodando localmente com Apache (sem Docker)
 
-Siga os passos abaixo para configurar e executar a aplicação localmente no seu sistema utilizando Apache, PHP 7.4 e MySQL:
+Siga os passos abaixo para configurar e executar a aplicação localmente no seu sistema Ubuntu utilizando PHP 7.4, MySQL, Apache ou Docker:
 
 ---
 
@@ -82,36 +82,12 @@ No Ubuntu, execute no terminal:
 
 ```bash
 sudo apt update
-sudo apt install apache2 php7.4 php7.4-mysql mysql-server
+sudo apt install php7.4 php7.4-mysql mysql-server
 ```
 
 ---
 
-### 🔢 2. Configure o banco de dados MySQL
-
-Entre no MySQL:
-
-```bash
-sudo mysql -u root -p
-```
-
-Crie o banco de dados:
-
-```sql
-CREATE DATABASE clientes_db;
-```
-
----
-
-### 📂 3. Configure o projeto PHP
-
-* Entre no diretório `clients/`:
-
-* Copie os arquivos para o diretório raiz do Apache:
-
-```bash
-sudo cp -r . /var/www/html/clients
-```
+### 📂 2. Configure o projeto PHP para rodar localmente
 
 * Crie um arquivo `.env` na raiz do projeto (ao lado de `index.php`), caso não queira usar as variáveis padrões:
 
@@ -124,46 +100,105 @@ DB_PASS=password
 
 ---
 
-### 🚦 4. Inicie o Apache
+### 3. Veja se o MySQL está rodando:
 
+* Veja se está rodando, se não incie-o e deixei enable caso não esteja:
+
+```bash
+sudo systemctl status mysql
+sudo systemctl start mysql
+sudo systemctl enable mysql
+```
+
+---
+
+### 4. Rodando a aplicação com comando simples no terminal
+
+* Entre no diretório `clients/`, e rode o comando
+
+```bash
+sudo php -S localhost:8000
+```
+Agora só acessar no navegador:
+
+```
+http://localhost:8000
+```
+
+### 5. Rodando no Apache
+
+* Rode o comando:
+```bash
+sudo apt install apache2
+```
+
+* Entre no diretório `clients/`:
+
+* Copie os arquivos para o diretório raiz do Apache:
+
+```bash
+sudo cp -r . /var/www/html/clients
+```
+* Dê permissão ao Apache para acessar os arquivos:
+
+```bash
+sudo chown -R www-data:www-data /var/www/html/clients
+sudo chmod -R 755 /var/www/html/clients
+```
+---
+
+Veja se está rodando:
+
+```bash
+sudo systemctl status apache2
+```
 Caso ainda não esteja rodando:
 
 ```bash
 sudo systemctl start apache2
 ```
+Caso não esteja enable:
+
+```bash
+sudo systemctl enable apache2
+```
 
 ---
 
-### 🔗 5. Acesse a aplicação
-
-Abra o navegador e acesse:
+* Acesse a aplicação pelo navegador:
 
 ```
-http://localhost/index.php
+http://localhost/clients/
 ```
 
 Pronto! A aplicação estará em funcionamento.
 
 ---
 
-### ⚡ Dica (Rodando em Docker)
+### 6. 🐋 Rodando com Docker
 
-Se quiser rodar o projeto com **Docker**, basta navegar até o diretório `clients/` e executar:
+⚠ Antes de começar, seu docker-compose precisa estar na versão 2.29 e o docker na versão 27.2 de preferência.
+
+⚠ Para subir o projeto completo, basta navegar até o diretório `clients/` e executar:
 
 ```bash
 docker-compose up --build
 ```
 
-A aplicação será acessada em:
+- Esses serviços inicializarão o contêiner da aplicação chamado php_app e do banco de dados chamado mysql_db.
+
+- A partir daqui, você pode executar o contêiner via CLI ou abri-los no VS Code.
+
+ℹ️ As dependências são instaladas por meio do Dockerfile que é lido pelo Docker.
+
+✨ Dica: A extensão Remote - Containers é recomendada para que você possa desenvolver sua aplicação no container Docker diretamente no VS Code, assim como você faz com seus arquivos locais.
+
+
+* A aplicação será acessada em:
 
 ```
 http://localhost:8000
 ```
-
-OBS: com ou sem /index.php no final da URL a aplicação permanece funcionando.
-
-## ✨ Instalação da Aplicação Express.js(node) + React
-
 
 ## Utilização
 ### 🧑‍💻 Utilização sobre o projeto PHP + MySQL
