@@ -70,8 +70,6 @@ Em casos de problema de execução do ambiente do avaliador, o teste poderá ser
 ## Instalação
 ### ✨ Instalação da Aplicação PHP + MySQL
 
-### 📁 Rodando localmente com Apache (sem Docker)
-
 Siga os passos abaixo para configurar e executar a aplicação localmente no seu sistema Ubuntu utilizando PHP 7.4, MySQL, Apache ou Docker:
 
 ---
@@ -89,7 +87,9 @@ sudo apt install php7.4 php7.4-mysql mysql-server
 
 ### 📂 2. Configure o projeto PHP para rodar localmente
 
-* Crie um arquivo `.env` na raiz do projeto (ao lado de `index.php`), caso não queira usar as variáveis padrões:
+* Crie um arquivo `.env` na raiz do projeto (ao lado de `index.php`), caso não queira usar as variáveis padrões.
+
+Exemplo:
 
 ```
 DB_HOST=localhost
@@ -117,7 +117,7 @@ sudo systemctl enable mysql
 * Entre no diretório `clients/`, e rode o comando
 
 ```bash
-sudo php -S localhost:8000
+php -S localhost:8000
 ```
 Agora só acessar no navegador:
 
