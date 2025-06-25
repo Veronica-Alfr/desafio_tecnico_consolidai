@@ -3,7 +3,7 @@ import { ProductCreateInput, ProductUpdateInput } from '../interfaces/Product';
 
 export default class ProductRepository {
   async findAll() {
-    return (await prisma.produto.findMany()).sort((a, b) => a.id - b.id);
+    return (await prisma.produto.findMany()).sort((a: { id: number; }, b: { id: number; }) => a.id - b.id);
   };
 
   async findById(id: number) {

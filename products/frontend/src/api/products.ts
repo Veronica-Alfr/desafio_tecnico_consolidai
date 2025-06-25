@@ -2,7 +2,7 @@ import axios, { type AxiosResponse } from 'axios';
 import type { IProduct } from '../interfaces/IProduct';
 import type { AxiosApiError } from './types';
 
-const API_URL = 'http://localhost:3002/produtos';
+const API_URL = 'http://localhost:3000/produtos';
 
 const api = axios.create({
   baseURL: API_URL,
