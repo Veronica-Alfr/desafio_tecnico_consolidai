@@ -408,10 +408,10 @@ DELETE /produtos/:id     # Remove logicamente (status = "excluido")
 | --------------- | --------- | -------------------------- |
 | id              | int       | Chave primária             |
 | nome            | string    | Nome do produto            |
-| preco           | decimal   | Preço unitário             |
+| preco           | string    | Preço unitário             |
 | estoque         | int       | Quantidade em estoque      |
 | descricao       | string    | Descrição do produto       |
-| status          | enum      | ativo / inativo / excluido |
+| status          | string    | ativo / inativo / excluido |
 | data\_alteracao | timestamp | Atualizado automaticamente |
 
 ---
