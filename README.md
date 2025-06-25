@@ -214,7 +214,8 @@ Certifique-se de ter as dependências instaladas:
 
 ```bash
 sudo apt update
-sudo apt install nodejs npm postgresql postgresql-contrib
+sudo apt install nodejs 
+npm postgresql postgresql-contrib
 ```
 
 Verifique se o `node` e `npm` estão instalados:
@@ -245,6 +246,8 @@ DATABASE_URL="prisma+postgres://localhost:51213/?api_key=..."  # Sua URL do pris
 
 > ⬆️ A URL do `DATABASE_URL` é gerada automaticamente ao rodar `npx prisma dev`. Esse banco precisa estar ativo enquanto o backend roda.
 
+> Por padrão as portas do prisma+postgres que ficam abertas são de 51213 à 51215.
+
 ---
 
 ### ⚙️ 3. Inicialize o banco e o backend (Node.js)
@@ -268,7 +271,7 @@ npx prisma generate
 npx prisma db push   # Ou npx prisma migrate dev (caso use migrações)
 ```
 
-Suba o banco com Prisma Cloud local (opcional):
+Suba o banco com Prisma Cloud local:
 
 ```bash
 npx prisma dev
